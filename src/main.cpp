@@ -24,8 +24,8 @@
 #define DATABASE_URL "https://projeto-healthcare-808d1-default-rtdb.firebaseio.com/" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
 #define DATABASE_SECRET "osNnJHAzSlqnasdZYrsblWAJsJ189OFclTrXWsJ0"
 
-#define WIFI_SSID "LAPTOP77 8270"
-#define WIFI_PASSWORD "1412&Jf3"
+#define WIFI_SSID "uaifai-apolo"
+#define WIFI_PASSWORD "bemvindoaocesar"
 // #define FIREBASE_HOST "https://projeto-healthcare-808d1-default-rtdb.firebaseio.com/"
 // #define FIREBASE_AUTH "osNnJHAzSlqnasdZYrsblWAJsJ189OFclTrXWsJ0"
 
@@ -127,7 +127,7 @@ void setup()
 	xTaskCreate(readHeartRate, "readHeartRate", 8192, NULL, 0, NULL);
 	xTaskCreate(monitorVitalSigns, "monitorVitalSigns", 8192, NULL, 0, NULL);
 	xTaskCreate(setOxygenLevel, "setOxygenLevel", 8192, NULL, 0, NULL);
-	xTaskCreate(callAttendant, "callAttendant", 8192, NULL, 10, NULL);
+	xTaskCreate(callAttendant, "callAttendant", 8192, NULL, 0, NULL);
 }
 
 void sendString(char *path, char *string)
@@ -152,7 +152,6 @@ void callAttendant(void *param)
 	{
 		Firebase.getInt(fbdoCalling,"/attendant/callAttendant");
 		bool calling = fbdoCalling.boolData();
-
 		if (calling)
 		{
 			digitalWrite(Led14_Pin, HIGH);
@@ -195,8 +194,8 @@ void blinkLed(void *param)
 			digitalWrite(Led14_Pin, LOW);
 			vTaskDelay(200);
 		}
-		else
-		{
+		else if (!callAttendant)
+		{	
 			digitalWrite(Led14_Pin, LOW);
 		}
 	}
